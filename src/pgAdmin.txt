@@ -1,0 +1,110 @@
+create table products(
+id serial primary key,
+product_name varchar,
+country_producted varchar,
+year_of_producted date);
+insert into products (product_name,country_producted,year_of_producted)
+values ('Chocolate Ata',
+' Kyrgyzstan', '2024-12-05');
+insert into products (product_name,country_producted,year_of_producted)
+values ('Chocolate  Umut',
+' Kyrgyzstan', '2024-12-05');
+alter table products add column city_producted varchar;
+insert into products(product_name,country_producted,year_of_producted,city_producted) values
+('milka strawbrry','Deutschland','2024-09-09','Berlin');
+alter table products rename id to product_id;
+alter table products alter column product_name set notnull;
+insert into products (product_name,country_producted,year_of_producted,city_producted)
+values ('Dool Barbie','USA','2024-3-4','New York');
+alter table products add column  category_id int references categories(category_id);
+alter table products rename column country_produced to country_of_origin;
+
+create table categories (
+    category_id serial primary key,
+    category_name varchar not null
+);
+insert into categories (category_name) values ('Electronics');
+insert into products (product_name, country_produced, year_of_produced, category_id) values ('Laptop', 'USA', '2024-01-01', 4);
+
+
+
+
+create table announcement(
+id serial primary key,
+description varchar,
+owner_announcement varchar,
+date_of_announcement date);
+alter table announcement alter column description set notnull;
+insert into announcement(description, owner_announcement,date_of_announcement)
+values('Books','Daniel','2023-12-3');
+alter table announcement add column products_id int references products(product_id);
+insert into announcement(description, owner_announcement,date_of_announcement,products_id)
+values('dools','Timur','2023-12-3', 4);
+
+
+create table benutzer (
+    user_id serial primary key,
+    username varchar (50) unique notnull,
+    password VARCHAR(255) NOTNULL,
+    email VARCHAR(100) UNIQUE NOTNULL);
+	insert into benutzer(username,password,email)
+	values ('Nurkyz','12334mnjk','adilbekovagmail.com');
+	alter table benutzer add column announcement_id int references announcement(id);
+		insert into benutzer(username,password,email,announcement_id)
+	values ('Nurjaz','123sdfdnjk','adilbekngmail.com',2);
+	alter table benutzer add column role_id int references roles(role_id);
+	alter table users alter column username set not null;
+
+	create table roles (
+    role_id serial primary key,
+    role_name varchar not null
+);
+
+
+insert into roles (role_name) values ('Admin');
+insert into benutzer (username,password, email,announcement_id, role_id)
+values ('Nurkyz21', '12334mnsdfrgtfjk', 'agwderfcfvgrbmail.com',2, 1);
+
+
+	create table favorites(
+	id serial primary key,
+	description varchar notnull,
+	owner_name varchar notnull);
+
+
+	create table orders (
+                        order_id serial primary key,
+                        order_date date not null,
+                        user_id int references benutzer(user_id)
+);
+create table order_items (
+    order_item_id serial primary key,
+    order_id int references orders(order_id),
+    product_id int references products(product_id),
+    quantity int notnull
+);
+insert into orders (order_date, user_id) values ('2024-07-01', 1);
+insert into order_items (order_id, product_id, quantity) values (1, 1, 2);
+
+alter table order_items add column total_price int;
+alter table order_items rename column quantity to item_quantity;
+
+
+
+
+
+create table authors (
+    author_id serial primary key,
+    author_name varchar notnull
+);
+create table books (
+    book_id serial primary key,
+    book_title varchar notnull,
+    publication_date date,
+    author_id int references authors(author_id)
+);
+	insert into authors (author_name) values ('J.K. Rowling');
+insert into books (book_title, publication_date, author_id)
+values ('Harry Potter and the Philosophers Stone', '1997-06-26', 1);
+alter table books add column genre varchar;
+alter table books alter column book_title set notnull;
