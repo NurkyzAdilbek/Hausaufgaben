@@ -326,3 +326,5 @@ select concat(d.first_name, ' ', d.last_name) as fullNameDoctors,count(p.first_n
 where department_name='Neurology'
 group by d.first_name,d.last_name
 having count(p.first_name)>3;
+
+create database task;
